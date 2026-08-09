@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build Your Own AI QA Agent in 30 minutes — Complete Step-by-Step Design & Build Guide</title>
+<style>
+:root{--v:#6D28D9;--g:#1F7A55;--o:#C2601A;--r:#B3261E;--b:#3B6EA5;--bg:#FAF7F2}
+*{box-sizing:border-box}
+body{font:15px/1.65 "Segoe UI",Arial,sans-serif;color:#222;background:var(--bg);margin:0 auto;padding:2rem 1.2rem;max-width:980px}
+h1{color:var(--v);line-height:1.2;margin:0}
+h2{border-left:6px solid var(--v);padding-left:.6rem;margin-top:2.4rem;color:#3b2a63}
+h3{margin-top:1.4rem;color:#444}
+table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.9rem;background:#fff}
+th,td{border:1px solid #bbb;padding:.45rem .6rem;vertical-align:top;text-align:left}
+th{background:#efe6f7}
+pre{background:#241f2e;color:#e8e4f4;padding:1rem;border-radius:8px;overflow-x:auto;font:12.5px/1.55 Consolas,Menlo,monospace}
+code{font-family:Consolas,Menlo,monospace;font-size:.92em;background:#eee6f9;padding:0 .25em;border-radius:4px}
+.note,.warn,.sec,.tip{border:1px solid;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}
+.note{border-color:#9ec5fe;background:#eef5ff}
+.warn{border-color:#f0b429;background:#fff8e1}
+.sec{border-color:#f28b82;background:#fdecea}
+.tip{border-color:#7bc4a0;background:#e9f7ef}
+.toc{background:#fff;border:1px solid #ddd;border-radius:10px;padding:1rem 1.4rem;margin:1.5rem 0}
+.toc a{text-decoration:none;color:var(--v)}
+.toc ul{columns:2;column-gap:2rem}
+.meta{color:#666;font-size:.85rem}
+footer{margin-top:3rem;font-size:.85rem;color:#666;border-top:2px solid var(--v);padding-top:1.5rem}
+.author-card{background:linear-gradient(135deg,#6D28D9 0%,#3B6EA5 100%);color:#fff;padding:1.5rem;border-radius:12px;margin:2rem 0;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.author-info{flex:1;min-width:250px}
+.author-info h3{color:#fff;margin:0 0 .3rem 0;font-size:1.3rem}
+.author-info p{margin:0;opacity:.95;font-size:.95rem}
+.author-link{display:inline-flex;align-items:center;gap:.5rem;background:#fff;color:var(--v);padding:.6rem 1.2rem;border-radius:8px;text-decoration:none;font-weight:600;transition:transform .2s}
+.author-link:hover{transform:scale(1.05)}
+.linkedin-icon{width:20px;height:20px}
+.hero-header{background:#fff;border:2px solid var(--v);border-radius:12px;padding:2rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.hero-header::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--v)}
+.badge{display:inline-block;background:var(--g);color:#fff;padding:.3rem .8rem;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.5px;margin-bottom:.8rem}
+.tagline{font-size:1.1rem;color:#555;margin:.8rem 0 0 0;font-style:italic}
+@media print{body{padding:0;background:#fff}pre{white-space:pre-wrap}tr{page-break-inside:avoid}h2{page-break-after:avoid}.author-card{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div class="hero-header">
+<span class="badge">FREE · LOCAL · PRIVATE</span>
+<h1>🏗️ Build Your Own AI QA Agent in 30 minutes</h1>
+<p class="tagline">"No API keys. No subscriptions. Runs 100% on your machine."</p>
+<p class="meta" style="margin-top:1rem">The Complete Step‑by‑Step Design & Build Guide · Initial Release · Version 1.0<br>
+Companion artifacts: <code>qa-findings-tracker.xlsx</code> (GAP Tracker · Test Cases · Summary Dashboard)</p>
+</div>
+
+<div class="author-card">
+<div class="author-info">
+<h3>Santosh Ukade</h3>
+<p>Test Automation Architect / Consultant</p>
+</div>
+<a href="https://www.linkedin.com/in/santoshukade-0470309192/" target="_blank" class="author-link">
+<svg class="linkedin-icon" fill="currentColor" viewBox="0 0 24 24">
+<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+</svg>
+Connect on LinkedIn
+</a>
+</div>
+
+<div class="toc"><b>📑 Table of Contents</b>
+<ul>
+<li><a href="#s0">0. How to Use This Guide</a></li>
+<li><a href="#s1">1. What You Will Build</a></li>
+<li><a href="#s2">2. The Six Design Principles</a></li>
+<li><a href="#s3">3. Step 1 — Plan the Environment</a></li>
+<li><a href="#s4">4. Step 2 — Install the Ollama Engine</a></li>
+<li><a href="#s5">5. Step 3 — Install & Launch Langflow</a></li>
+<li><a href="#s6">6. Step 4 — Build the Memory (RAG)</a></li>
+<li><a href="#s7">7. Step 5 — Build the Agent & Tools</a></li>
+<li><a href="#s8">8. Step 6 — Configure the Guardrails</a></li>
+<li><a href="#s9">9. Step 7 — Operate the Agent</a></li>
+<li><a href="#s10">10. Step 8 — Connect the Tracker Workbook</a></li>
+<li><a href="#s11">11. Step 9 — Verify Your Build</a></li>
+<li><a href="#s12">12. Step 10 — Troubleshooting</a></li>
+<li><a href="#s13">13. Go‑Live Checklist & Cost/Value</a></li>
+<li><a href="#a">A. Extended Persona Add‑on</a></li>
+<li><a href="#b">B. Glossary</a></li>
+<li><a href="#c">C. One‑Page Quick Card</a></li>
+</ul></div>
+
+<h2 id="s0">0. How to Use This Guide</h2>
+<p>This guide is written for <b>two lanes</b> of readers:</p>
+<ul>
+<li>🟦 <b>Manual testers:</b> plain English only. Every step says exactly what to click/type; jargon is explained in the Glossary (Appendix B).</li>
+<li>🟩 <b>Automation testers / SDETs:</b> you additionally receive runnable Playwright/Cypress/k6 artifacts, a custom Langflow tool component, and CI‑friendly file outputs.</li>
+</ul>
+<p>Conventions: <span class="note" style="display:inline-block;padding:.1rem .6rem">💡 tip</span> <span class="warn" style="display:inline-block;padding:.1rem .6rem">⚠️ critical rule</span> <span class="sec" style="display:inline-block;padding:.1rem .6rem">🔒 security</span>. Follow the steps in order — each one builds directly on the previous.</p>
+
+<h2 id="s1">1. What You Will Build</h2>
+<p>A <b>private, free, local AI QA teammate</b> that reads your requirement documents, generates traceable test artifacts, writes real automation files, and never sends your data to the cloud. No API keys, no subscriptions, no telemetry.</p>
+<p><b>The four roles in the architecture:</b></p>
+<table>
+<tr><th>Component</th><th>Role</th><th>Plain‑English analogy</th></tr>
+<tr><td><b>Ollama</b></td><td>Local runtime serving AI models at <code>localhost:11434</code></td><td>The engine room</td></tr>
+<tr><td><b>qwen2.5</b></td><td>Open‑source LLM; the core reasoning engine</td><td>The brain</td></tr>
+<tr><td><b>Langflow</b></td><td>Visual builder at <code>localhost:7860</code>; connect components without code</td><td>The workbench</td></tr>
+<tr><td><b>Chroma + nomic‑embed‑text</b></td><td>Local vector database + embedding model = long‑term memory (RAG)</td><td>The bookshelf</td></tr>
+</table>
+<p><b>What the finished agent can do:</b> Test Case Generation (happy/negative/edge/boundary/priority) · Requirements Gap Analysis · User Story Elaboration (Given/When/Then, DoD) · Bug Severity & Priority Triage · Automation Strategy (Playwright/Selenium/Cypress) · Security Testing (OWASP Top‑10, SQLi, XSS, auth) · API & Integration Testing (REST/GraphQL, E2E flows) · Performance/load (k6/JMeter) · Regression prioritization.</p>
+<pre>
+── MEMORY INGESTION (run once per document update) ─────────────────────────
+[File/URL Loader] ▶ [Recursive Char Splitter 1000/200] ▶
+[Ollama Embeddings: nomic-embed-text] ▶ [Chroma Vector Store: "qa_specs"]
+
+── DAILY OPERATIONS ────────────────────────────────────────────────────────
+[Chat Input] ▶ [QA AGENT · Temp 0.1–0.3] ▶ [Chat Output]
+                 ▲            ▲
+   [System Prompt: Senior QA Persona]   TOOLS: [Chroma Retriever "qa_specs"]
+                 ▲                       [Write-to-File]  [HTTP Request*]
+   [Ollama: qwen2.5:latest]  (+ qwen2.5-coder:14b for scripting)
+                                           *test/staging environments ONLY
+── ARTIFACTS ──▶ ./output/*.spec.ts / *.md / *.csv ──▶ qa-findings-tracker.xlsx
+</pre>
+
+<h2 id="s2">2. The Six Design Principles</h2>
+<p>Every decision in this guide serves one of six principles. Treat them as your acceptance criteria for the build.</p>
+<table>
+<tr><th>#</th><th>Principle</th><th>How it is achieved</th><th>Why it matters</th></tr>
+<tr><td>1</td><td>Local‑first privacy</td><td>Loopback binding (127.0.0.1) for ports 11434 & 7860</td><td>Proprietary PRDs never leave your machine.</td></tr>
+<tr><td>2</td><td>Grounded answers</td><td>RAG: agent reads your specs from Chroma before answering</td><td>Answers cite real requirements instead of model guesses.</td></tr>
+<tr><td>3</td><td>Deterministic output</td><td>Temperature 0.1–0.3 + strict persona rules</td><td>Same input → same test table; artifacts are audit‑stable.</td></tr>
+<tr><td>4</td><td>Agentic action</td><td>Write‑to‑File + HTTP tools (Tool Mode ON)</td><td>The agent delivers runnable files, not just advice.</td></tr>
+<tr><td>5</td><td>Traceable artifacts</td><td>GAP‑n ↔ TC‑n linking in the tracker workbook</td><td>Every test case maps to a requirement — compliance ready.</td></tr>
+<tr><td>6</td><td>Persistent & recoverable</td><td>File outputs + flow JSON export</td><td>Work is saved, versioned, and restorable.</td></tr>
+</table>
+
+<h2 id="s3">3. Step 1 — Plan the Environment</h2>
+<table>
+<tr><th>Tier</th><th>Model</th><th>Download</th><th>RAM/VRAM</th><th>Best for</th></tr>
+<tr><td>BASE</td><td>qwen2.5 (7B, Q4 quant ≈ 4.7 GB)</td><td>~4.7 GB</td><td>≥ 5.5 GB minimum</td><td>Test cases, triage, gap analysis</td></tr>
+<tr><td>PRO</td><td>qwen2.5:14b / 32b / coder</td><td>larger</td><td><b>16 GB+</b> (recommended minimum for agent + vector DB + IDE together)</td><td>Complex traceability, Playwright/Selenium codegen</td></tr>
+</table>
+<p><b>Also required:</b> 10 GB+ high‑speed SSD (model weights + vector indices); multi‑core CPU with AVX2 (modern Intel/AMD) or Apple Silicon, or an NVIDIA GPU for faster inference; <b>Python 3.10 / 3.11 / 3.12 only</b> — this is the supported range for the orchestration stack.</p>
+<div class="tip">💡 <b>Quantization explained:</b> "Q4" means 4‑bit compressed weights — about 4.7 GB instead of ~14 GB for a 7B model, with only minor quality loss. This is why serious LLMs fit on consumer hardware.</div>
+<div class="tip">💡 <b>Model sizing guidance:</b> 8 GB RAM → <code>qwen2.5:3b</code>; 16 GB → <code>qwen2.5:7b</code> (default); 32 GB+/GPU → <code>qwen2.5:14b</code>; script‑heavy work → add <code>qwen2.5-coder</code> as a second model used only for automation tasks.</div>
+
+<h2 id="s4">4. Step 2 — Install the Ollama Engine & Models</h2>
+<ol>
+<li>Download and install the runtime from <b>ollama.com</b>.</li>
+<li>Pull the three models the workstation needs:
+<pre>
+ollama pull qwen2.5:latest        # core reasoning brain
+ollama pull qwen2.5-coder:14b     # high-fidelity scripting brain (Playwright/Cypress)
+ollama pull nomic-embed-text      # dedicated RAG embedding model (vectors only)
+</pre></li>
+<li><b>Verify:</b> open <code>http://localhost:11434</code> → you must see "Ollama is running".</li>
+<li><b>Network check:</b> confirm the service is <i>not</i> reachable from another machine on your network.</li>
+</ol>
+<div class="sec">🔒 <b>The Loopback Mandate:</b> Ollama (11434) and Langflow (7860) must stay bound to <code>127.0.0.1</code> ("this machine only"). Binding to <code>0.0.0.0</code> ("anyone on the network") would expose proprietary requirements and test strategy. If you ever must expose a port, firewall + authentication are mandatory.</div>
+
+<h2 id="s5">5. Step 3 — Install & Launch Langflow</h2>
+<pre>
+pip install langflow -U        # install the orchestration framework FIRST
+python -m langflow run         # then start the workbench
+</pre>
+<ol>
+<li>Open <code>http://127.0.0.1:7860</code>.</li>
+<li>Click <b>New Flow → Blank Flow</b> and name it <code>QA‑Agent</code>.</li>
+</ol>
+<div class="tip">💡 Use a virtual environment (<code>python -m venv qaenv</code>, then activate) to keep dependencies isolated. Port busy? <code>lsof -i :7860</code> → kill the PID, or run <code>python -m langflow run --port 7861</code>.</div>
+
+<h2 id="s6">6. Step 4 — Build the Memory: RAG Ingestion</h2>
+<p><b>Why RAG?</b> Chat boxes have small context windows and no long‑term memory. RAG (Retrieval‑Augmented Generation) converts your spec documents into searchable vectors so the agent can <i>look up</i> evidence for every answer — don't paste docs into chat; let the agent read the source.</p>
+<p><b>Wire these components in this exact order:</b></p>
+<ol>
+<li><b>File/URL Loader</b> → local PDF / Markdown / JSON requirements.</li>
+<li><b>Recursive Character Text Splitter</b> → <code>Chunk Size: 1000</code>, <code>Overlap: 200</code>.</li>
+<li><b>Ollama Embeddings</b> → select <code>nomic-embed-text</code>.</li>
+<li><b>Vector Store (Chroma)</b> → receives splitter + embeddings; set collection name e.g. <code>qa_specs</code>.</li>
+</ol>
+<div class="tip">💡 <b>Why 1000/200?</b> ~1000‑character chunks are small enough for precise similarity search, while a 200‑character overlap prevents an acceptance criterion from being cut in half between chunks.</div>
+<div class="warn">⚠️ <b>Critical rule:</b> the <b>Collection Name and Search URL must match exactly</b> between Ingestion and Retrieval flows, and <b>nomic‑embed‑text must be selected on both sides</b>. Vectors made by one model/collection cannot be searched by another — mismatches fail silently as "no context found".</div>
+<p><b>Retrieval wiring:</b> add a <b>Chroma Retriever</b> (same collection) in the operations flow and connect it to the Agent's <b>Tools</b> port, so the agent decides <i>when</i> to consult your documentation.</p>
+
+<h2 id="s7">7. Step 5 — Build the Agent Brain & Tools</h2>
+<p><b>Core wiring:</b> <code>Chat Input → Agent → Chat Output</code>. Connect the <b>Ollama</b> component (qwen2.5:latest, or 14b for complex tasks) to the Agent's <b>Model</b> input. Set <b>Tool Mode Enabled → ON</b>.</p>
+<p><b>Tool 1 — Write‑to‑File</b> (paste into a Langflow <i>Custom Component</i>):</p>
+<pre>
+import os
+from langflow.custom import CustomComponent
+
+class WriteToFile(CustomComponent):
+    display_name = "Write to File Tool"
+    description = "Allows the agent to write scripts (.spec.ts, .js) or reports (.md) to the local disk."
+
+    def build_config(self):
+        return {
+            "file_path": {"display_name": "File Path",
+                          "info": "Full local path including filename (e.g., ./output/test.spec.ts)"},
+            "content": {"display_name": "Content", "multiline": True,
+                        "info": "The script or text to be written."}
+        }
+
+    def build(self, file_path: str, content: str) -&gt; str:
+        try:
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write(content)
+            return f"SUCCESS: File written to {file_path}"
+        except Exception as e:
+            return f"FAILURE: Could not write file. Error: {str(e)}"
+</pre>
+<p><b>How it works:</b> <code>build_config</code> creates the two fields the agent fills; <code>build</code> creates the folder, writes the file, and returns <code>SUCCESS/FAILURE</code> — the return string lets the agent <i>self‑verify</i> the action and report honestly. This is the bridge between requirement analysis and your IDE: runnable Playwright scripts or BDD feature files land directly in your project folder.</p>
+<p><b>Tool 2 — HTTP Request:</b> point only at <b>test/staging</b> environments so the agent can probe endpoints from the canvas. <span class="sec" style="display:inline-block;padding:.1rem .6rem">🔒 never production.</span></p>
+<p><b>Backup:</b> after every change, Menu → <b>Export flow as .JSON</b>; keep the JSON and the system prompt under Git.</p>
+
+<h2 id="s8">8. Step 6 — Configure the Guardrails</h2>
+<p><b>System Message — paste verbatim into the Agent:</b></p>
+<pre>
+You are 'QA-Agent', a Senior QA Engineer with 10+ years of SDLC expertise (web, API, mobile).
+You operate 100% locally and privately.
+CAPABILITIES: Test Case Generation, Requirements Gap Analysis, User Story Elaboration,
+Bug Triage, Automation Strategy, Security Testing, API Testing.
+RULES: (1) base answers ONLY on provided context; (2) state assumptions explicitly;
+(3) never fabricate requirements; (4) be deterministic and concise;
+(5) output test cases in table format: ID | Precondition | Steps | Expected | Priority;
+(6) flag ambiguities as 'GAP-n' with severity;
+(7) end every answer with 'Suggested next QA step:'.
+</pre>
+<p><b>Why each rule exists:</b></p>
+<table>
+<tr><th>Rule</th><th>Purpose</th></tr>
+<tr><td>1 — Only provided context</td><td>Makes your documents the single source of truth; blocks hallucination.</td></tr>
+<tr><td>2 — State assumptions</td><td>Humans see exactly what was invented, for review.</td></tr>
+<tr><td>3 — Never fabricate</td><td>Protects traceability and compliance.</td></tr>
+<tr><td>4 — Deterministic & concise</td><td>Stable, documentation‑grade artifacts.</td></tr>
+<tr><td>5 — Table format</td><td>Paste‑ready for the tracker workbook / TestRail / Excel.</td></tr>
+<tr><td>6 — GAP‑n with severity</td><td>Feeds the GAP Tracker sheet with structured findings.</td></tr>
+<tr><td>7 — Next QA step</td><td>Keeps the testing workflow moving forward.</td></tr>
+</table>
+<p><b>Deterministic calibration:</b> set <b>Temperature = 0.1–0.3</b>. Temperature controls sampling randomness; high values make prose creative but test steps <i>flaky</i>. Low values give stable, repeatable results — the same discipline you apply to flaky automated tests, applied to the model.</p>
+
+<h2 id="s9">9. Step 7 — Operate the Agent</h2>
+<table>
+<tr><th>#</th><th>Capability</th><th>Say / type</th><th>Expected output</th></tr>
+<tr><td>1</td><td>Test Generation</td><td>"Generate test cases for Feature X"</td><td>Table ID/Steps/Expected/Priority + CSV</td></tr>
+<tr><td>2</td><td>Gap Analysis</td><td>"Audit these requirements for ambiguities"</td><td>GAP‑1…n with severity</td></tr>
+<tr><td>3</td><td>Story Elaboration</td><td>"Rewrite this story with Gherkin AC"</td><td>Given/When/Then + DoD</td></tr>
+<tr><td>4</td><td>Bug Triage</td><td>"Analyze this bug/log for root cause"</td><td>Severity/Priority + impact notes</td></tr>
+<tr><td>5</td><td>Automation</td><td>"Create a Playwright script for Flow"</td><td>File written via Write‑to‑File</td></tr>
+<tr><td>6</td><td>Security Audit</td><td>"Run OWASP Top‑10 check on this spec"</td><td>SQLi/XSS/Auth checklist</td></tr>
+<tr><td>7</td><td>API Testing</td><td>"Validate this JSON schema contract"</td><td>Schema + E2E flow steps</td></tr>
+<tr><td>8</td><td>Perf & A11y</td><td>"Generate a k6 script / a11y audit list"</td><td>k6 snippet + WCAG checks</td></tr>
+</table>
+<ul>
+<li>🟦 <b>Manual lane example:</b> "Audit this PRD section for gaps" (paste) → log the GAPs → "Write boundary test cases for GAP‑2 as CSV for the tracker."</li>
+<li>🟩 <b>Automation lane example:</b> "/auto refund flow playwright" → agent writes <code>./output/refund.spec.ts</code> → commit & wire into CI.</li>
+</ul>
+
+<h2 id="s10">10. Step 8 — Connect the Tracker Workbook</h2>
+<p>The companion workbook (<code>qa-findings-tracker.xlsx</code>) turns chat output into auditable QA records across three sheets:</p>
+<ul>
+<li><b>GAP Tracker:</b> log of requirement ambiguities with severity, impact, resolution, status.</li>
+<li><b>Test Cases:</b> actionable suite linked back to GAPs (traceability).</li>
+<li><b>Summary Dashboard:</b> formula‑driven metrics — GAP status/severity counts, TC status counts, Gap‑Linked Test Cases, <i>Active Gap Coverage %</i>.</li>
+</ul>
+<p><b>Paste agent output using identical column headers:</b></p>
+<p>GAP rows → <code>Gap ID | Requirement Section/PRD | Gap Description | Severity | Testing Impact | Suggested Resolution | Status(=Open) | Associated TC ID</code></p>
+<p>TC rows → <code>TC ID | Linked GAP | Test Case Title | Precondition | Test Steps & Input Data | Expected Result | Priority | Status(=Draft)</code></p>
+<p><b>Workflow rule:</b> every GAP must gain ≥ 1 linked TC (see workbook exemplars: GAP‑1→TC‑3/TC‑4, GAP‑2→TC‑5, GAP‑3→TC‑6, GAP‑4→TC‑7). <b>Color key:</b> edit only white input cells; never overwrite formula‑driven cells.</p>
+
+<h2 id="s11">11. Step 9 — Verify Your Build</h2>
+<table>
+<tr><th>#</th><th>Check</th><th>Pass criteria</th></tr>
+<tr><td>1</td><td><code>/testcases password field 8–20 chars</code></td><td>Boundary values 7/8/20/21 present + CSV block</td></tr>
+<tr><td>2</td><td>RAG grounding: upload a 1‑page spec, ask a question only the spec answers</td><td>Answer cites the doc; no fabrication</td></tr>
+<tr><td>3</td><td><code>/gap "User can reset password via email"</code></td><td>GAP‑n list with severities + PO questions</td></tr>
+<tr><td>4</td><td>"Write a Playwright login script to ./output/login.spec.ts"</td><td>SUCCESS message + file exists on disk</td></tr>
+<tr><td>5</td><td>Determinism: run check 1 twice</td><td>Identical tables (Temp 0.1–0.3)</td></tr>
+<tr><td>6</td><td>Log results into the tracker</td><td>Dashboard counts & Coverage % update correctly</td></tr>
+</table>
+
+<h2 id="s12">12. Step 10 — Troubleshooting</h2>
+<table>
+<tr><th>Symptom</th><th>Why it happens</th><th>Resolution</th></tr>
+<tr><td>"Address already in use" (11434/7860)</td><td>Another process owns the port</td><td><code>lsof -i :7860</code> → kill PID, or <code>--port 7861</code></td></tr>
+<tr><td>Inference stops / "Out of Memory"</td><td>Model + browser exceed RAM</td><td>Scale to 7B/3B; close Chrome & RAM‑heavy apps</td></tr>
+<tr><td>RAG: "No context found" despite upload</td><td>Embedding/collection mismatch</td><td>Verify <code>nomic-embed-text</code> on both sides; Collection Name & Search URL identical</td></tr>
+<tr><td>Vector DB errors / corruption</td><td>Partial writes / stale index</td><td>Delete local Chroma folder; re‑run Ingestion</td></tr>
+<tr><td>Langflow won't start</td><td>Unsupported Python</td><td>Confirm 3.10–3.12; <code>pip install -U langflow</code>; use venv</td></tr>
+<tr><td>Agent ignores tools</td><td>Tools not wired / mode off</td><td>Tool Mode = ON; edges connected to the Tools port</td></tr>
+</table>
+
+<h2 id="s13">13. Go‑Live Checklist & Cost/Value</h2>
+<pre>
+[x] RAM provisioned & models pulled (qwen2.5, qwen2.5-coder:14b, nomic-embed-text)
+[x] Langflow installed; ports locked to 127.0.0.1
+[x] Document Loader + Splitter + Embeddings + Chroma wired (RAG)
+[x] Action tools attached (Write-to-File, HTTP test-only); flow JSON exported
+[x] Temp 0.1–0.3 + verbatim Senior-QA system prompt enforced
+[x] Tracker workbook adopted (GAP ↔ TC traceability, dashboard live)
+</pre>
+<table>
+<tr><th>The Weightless Cost</th><th>The Heavy Value</th></tr>
+<tr><td>$0.00 forever · 0 cloud dependencies · 0 API keys · 0 telemetry</td><td>Local LLM reasoning · RAG document ingestion · agentic file/API tools · strict output guardrails · auditable traceability</td></tr>
+</table>
+
+<h2 id="a">Appendix A — Extended Persona Add‑on (optional)</h2>
+<p>Append <b>after</b> the verbatim prompt (never replace it):</p>
+<pre>
+EXTENSIONS: Also support /e2e (UI→API→DB journey maps + Playwright E2E),
+/perf (k6/JMeter skeletons + SLOs), /a11y (WCAG 2.1 AA), /data (boundary data sets),
+/explore (SFDPOT charters), /regress (risk-based prioritization).
+TRACKER CSV FORMATS: GAP rows use headers
+"Gap ID,Requirement Section/PRD,Gap Description,Severity,Testing Impact,Suggested Resolution,Status,Associated TC ID";
+TC rows use headers
+"TC ID,Linked GAP,Test Case Title,Precondition,Test Steps & Input Data,Expected Result,Priority,Status".
+</pre>
+
+<h2 id="b">Appendix B — Glossary</h2>
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Ollama</td><td>Local runtime that downloads & serves LLMs at localhost:11434.</td></tr>
+<tr><td>Langflow</td><td>Visual, no‑code builder for AI flows at localhost:7860.</td></tr>
+<tr><td>RAG</td><td>Retrieval‑Augmented Generation: the agent searches your docs before answering.</td></tr>
+<tr><td>Embedding</td><td>Numeric vector representation of text; similar text → nearby vectors.</td></tr>
+<tr><td>Vector Store / Collection</td><td>Database (Chroma) holding embeddings; a "collection" is one named index.</td></tr>
+<tr><td>Chunk / Overlap</td><td>Document pieces (1000 chars) with shared border (200) so meaning isn't cut.</td></tr>
+<tr><td>Temperature</td><td>Randomness dial; 0.1–0.3 = stable, documentation‑grade output.</td></tr>
+<tr><td>Loopback (127.0.0.1)</td><td>"This machine only" network binding — the privacy cornerstone.</td></tr>
+<tr><td>Quantization (Q4)</td><td>Weight compression (~4.7 GB for 7B) to fit consumer hardware.</td></tr>
+<tr><td>Tool Mode</td><td>Agent setting that lets components be invoked as callable tools.</td></tr>
+<tr><td>AC / DoD</td><td>Acceptance Criteria / Definition of Done.</td></tr>
+<tr><td>Gherkin / BDD</td><td>Given/When/Then structured, testable requirements language.</td></tr>
+<tr><td>OWASP Top‑10</td><td>Standard web security risk list (SQLi, XSS, auth failures…).</td></tr>
+<tr><td>E2E</td><td>End‑to‑end test spanning UI → API → DB in one user journey.</td></tr>
+<tr><td>Traceability</td><td>Every TC links to a requirement/GAP (the tracker's core purpose).</td></tr>
+</table>
+
+<h2 id="c">Appendix C — One‑Page Quick Card</h2>
+<table>
+<tr><th>Item</th><th>Value</th></tr>
+<tr><td>Ports</td><td>Ollama 11434 · Langflow 7860 (both 127.0.0.1 only)</td></tr>
+<tr><td>Models</td><td>qwen2.5:latest · qwen2.5-coder:14b · nomic-embed-text</td></tr>
+<tr><td>Splitter</td><td>Chunk 1000 / Overlap 200</td></tr>
+<tr><td>Temperature</td><td>0.1–0.3</td></tr>
+<tr><td>Commands</td><td>/testcases /gap /story /triage /auto /api /e2e /security /perf /a11y /data /explore /regress</td></tr>
+<tr><td>Outputs</td><td>./output/*.spec.ts · *.md · *.csv → tracker workbook → dashboard</td></tr>
+<tr><td>Golden rule</td><td>Every GAP gains ≥ 1 linked TC; every answer ends with "Suggested next QA step:"</td></tr>
+</table>
+
+<footer>
+<p><b>Build Your Own AI QA Agent in 30 minutes</b> — Private Local AI QA Agent · Initial Release · 100% local · $0.00 forever · No cloud. No cost. No compromise.</p>
+<p style="margin-top:1rem;font-size:.8rem">Created by <b>Santosh Ukade</b> · Test Automation Architect / Consultant</p>
+</footer>
+</body>
+</html>
